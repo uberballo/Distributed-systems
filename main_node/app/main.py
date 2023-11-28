@@ -14,3 +14,7 @@ app = FastAPI(lifespan=lifespan)
 @app.get("/")
 async def read_root():
     return {"temp_data:": app.state.temp_data}
+
+@app.get("/main")
+async def read_root():
+    return {"Greetings from main node"}
