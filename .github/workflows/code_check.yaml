@@ -19,13 +19,13 @@ jobs:
           pip install ./main_node[dev] ./client[dev] ./chat_node[dev]
       - name: Format Check
         if: always()
-        run: black  --check --config black.toml .
+        run: make format
       - name: Lint Check
         if: always()
-        run: pylint --rcfile pylintrc.toml --recursive=y --ignore=.venv,build .
+        run: make lint
       - name: Imports check
         if: always()
-        run: isort --check-only --settings isort.toml .
+        run: make imports
       - name: Typing check
         if: always()
-        run: mypy --config-file mypy.toml . --exclude build
+        run: make types
