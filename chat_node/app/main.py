@@ -1,4 +1,16 @@
+from fastapi import FastAPI
+from contextlib import asynccontextmanager
 
 
-if __name__ == "__main__":
-    print("Hello from chat_node")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    app.state.temp_data = ["hello","world"]
+    yield
+    
+
+app = FastAPI(lifespan=lifespan)
+
+@app.get("/")
+async def read_root():
+    return {"temp_data:": app.state.temp_data}
