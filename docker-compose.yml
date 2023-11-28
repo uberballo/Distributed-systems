@@ -1,0 +1,9 @@
+services:
+  chat-node:
+    build:
+      context: ./chat_node
+      dockerfile: Dockerfile
+  main-node:
+    build:
+      context: ./main_node
+      dockerfile: Dockerfile
