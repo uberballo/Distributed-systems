@@ -23,9 +23,4 @@ pip install --editable main_node[dev] --editable chat_node[dev] --editable clien
 
 ### Linting, formatting, type checking, import sorting
 
-```
-black  --check --config black.toml . &&
-isort --check-only --settings isort.toml . &&
-pylint --rcfile pylintrc.toml --recursive=y --ignore=.venv .  &&
-mypy --config-file mypy.toml .
-```
+After activating the environment and installing applications and dependencies: `make check`
