@@ -12,10 +12,9 @@ services:
       context: ./main_node
       dockerfile: Dockerfile
     ports:
-    - "127.0.0.1:8000:8000"
+      - "127.0.0.1:8000:8000"
     networks:
       - chat
 
 networks:
   chat:
-    external: true
