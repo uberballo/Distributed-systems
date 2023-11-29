@@ -23,13 +23,3 @@ content-type: application/json
 ###
 
 GET http://localhost:8000/nodes
-###
-POST http://localhost:8000/items
-content-type: application/json
-
-{
-    "name": "Foo",
-    "description": "An optional description",
-    "price": 45.2,
-    "tax": 3.5
-}
