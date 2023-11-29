@@ -1,9 +1,9 @@
 [project]
 name = "main_node"
 version = "0.1.0"
-requires-python = ">=3.12"
+requires-python = ">=3.10"
 
-dependencies = ["fastapi", "uvicorn"]
+dependencies = ["fastapi", "uvicorn", "pydantic"]
 
 [project.optional-dependencies]
 dev = ["black", "isort", "pylint[spelling]", "mypy"]
