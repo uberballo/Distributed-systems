@@ -6,11 +6,11 @@ check-format:
 format:
 	black  --config black.toml .
 
-.PHONY: isort
+.PHONY: check-isort
 check-imports:
 	isort --check-only --settings isort.toml .
 
-.PHONY: isort
+.PHONY: imports
 imports:
 	isort --settings isort.toml .
 
@@ -23,4 +23,4 @@ types:
 	mypy --config-file mypy.toml . --exclude build
 
 .PHONY: check
-check: check-format imports lint types
+check: check-format check-imports lint types
