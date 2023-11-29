@@ -11,7 +11,7 @@ Start the service by running:
 TODO:
 - [ ] Send messages to a chat node
 - [ ] Get messages from a chat node
-- [ ] Get messages and neighbors from the main node
+- [ ] Get neighbors from the main node
 - [ ] Implement proper initialization to a chat node
 - [ ] Ping main node when a new chat nodes joins
 - [ ] Add health checker to main node
