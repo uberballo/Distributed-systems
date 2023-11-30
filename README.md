@@ -11,11 +11,11 @@ Start the service by running:
 TODO:
 - [ ] Send messages to a chat node
 - [ ] Get messages from a chat node
-- [ ] Get neighbors from the main node
-- [ ] Implement proper initialization to a chat node
+- [x] Get neighbors from the main node
+- [x] Implement proper initialization to a chat node
     - Easy to do with fastapi `@app.on_event("startup")`
     - More difficult is reinitialization after node you are connected to disconnects while serving client
-- [ ] Ping main node when a new chat nodes joins
+- [x] Ping main node when a new chat nodes joins
 - [ ] Add health checker to main node
 - [ ] Create a client that communicates with a chat node
 
