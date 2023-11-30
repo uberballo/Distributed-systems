@@ -6,7 +6,7 @@ check-format:
 format:
 	black  --config black.toml .
 
-.PHONY: check-isort
+.PHONY: check-imports
 check-imports:
 	isort --check-only --settings isort.toml .
 
