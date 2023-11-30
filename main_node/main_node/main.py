@@ -33,8 +33,9 @@ async def read_main():
 
 @app.post("/join")
 async def handle_node_join(node: ChatNode):
+    response = app.state.chat_nodes
     app.state.chat_nodes.append(node)
-    return node
+    return response
 
 
 @app.get("/nodes")
