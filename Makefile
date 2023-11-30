@@ -1,10 +1,18 @@
-.PHONY: format
-format:
+.PHONY: check-format
+check-format:
 	black  --check --config black.toml .
 
-.PHONY: isort
-imports:
+.PHONY: format
+format:
+	black  --config black.toml .
+
+.PHONY: check-imports
+check-imports:
 	isort --check-only --settings isort.toml .
+
+.PHONY: imports
+imports:
+	isort --settings isort.toml .
 
 .PHONY: lint
 lint:
@@ -15,4 +23,4 @@ types:
 	mypy --config-file mypy.toml . --exclude build
 
 .PHONY: check
-check: format imports lint types
+check: check-format check-imports lint types

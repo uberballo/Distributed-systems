@@ -11,3 +11,15 @@ GET http://localhost:8001
 
 ###
 GET http://localhost:8001/main
+
+###
+POST http://localhost:8000/join
+content-type: application/json
+
+{
+    "name": "sample1",
+    "address": "asd"
+}
+###
+
+GET http://localhost:8000/nodes
