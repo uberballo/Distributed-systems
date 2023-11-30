@@ -10,7 +10,9 @@ async def send_join_event():
     data = {"name": "chat", "address": own_address}
 
     async with httpx.AsyncClient() as client:
-        response = await client.post("http://localhost:8000/join", json=data)
+        response = await client.post(
+            "http://main-node:8000/join", json=data, timeout=1
+        )
         res = response.json()
         return res
 
@@ -29,6 +31,11 @@ app = FastAPI(lifespan=lifespan)
 @app.get("/")
 async def read_root():
     return {"temp_data:": app.state.temp_data}
+
+
+@app.get("/health")
+async def healthcheck():
+    return "I AM ALIVE"
 
 
 @app.get("/main")

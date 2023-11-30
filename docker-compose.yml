@@ -7,6 +7,8 @@ services:
       - "127.0.0.1:8001:8001"
     networks:
       - chat
+    depends_on:
+      - main-node
   main-node:
     build:
       context: ./main_node

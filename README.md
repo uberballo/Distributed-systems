@@ -16,7 +16,7 @@ TODO:
     - Easy to do with fastapi `@app.on_event("startup")`
     - More difficult is reinitialization after node you are connected to disconnects while serving client
 - [x] Ping main node when a new chat nodes joins
-- [ ] Add health checker to main node
+- [x] Add health checker to main node
 - [ ] Create a client that communicates with a chat node
 
 ## Dev environment

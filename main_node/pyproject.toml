@@ -3,7 +3,7 @@ name = "main_node"
 version = "0.1.0"
 requires-python = ">=3.10"
 
-dependencies = ["fastapi", "uvicorn", "pydantic"]
+dependencies = ["fastapi", "uvicorn", "pydantic", "httpx"]
 
 [project.optional-dependencies]
 dev = ["black", "isort", "pylint[spelling]", "mypy"]
