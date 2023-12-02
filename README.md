@@ -32,3 +32,7 @@ pip install --editable main_node[dev] --editable chat_node[dev] --editable clien
 ### Linting, formatting, type checking, import sorting
 
 After activating the environment and installing applications and dependencies: `make check`
+
+### Docker compose with reload
+
+`docker compose -f docker-compose-dev.yml up --build`
