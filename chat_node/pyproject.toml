@@ -6,4 +6,4 @@ requires-python = ">=3.10"
 dependencies = ["fastapi", "httpx", "uvicorn"]
 
 [project.optional-dependencies]
-dev = ["black", "isort", "pylint[spelling]", "mypy"]
+dev = ["uvicorn[standard]", "black", "isort", "pylint[spelling]", "mypy"]

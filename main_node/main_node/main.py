@@ -57,7 +57,7 @@ async def healthcheck_nodes(nodes: list[ChatNode]):
                 async with httpx.AsyncClient(timeout=1) as client:
                     print("sending response")
                     response = await client.get(
-                        f"http://{node.address}:8001/health"
+                        f"http://{node.address}/health"
                     )
                     print("Got response")
                     res = response.json()

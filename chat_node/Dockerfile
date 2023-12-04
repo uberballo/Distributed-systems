@@ -22,7 +22,7 @@ RUN adduser \
     appuser
 
 # Inform Docker that container listens this port at runtime
-EXPOSE 8000
+EXPOSE 8001
 
 # Download dependencies as a separate step to take advantage of Docker's caching
 # Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
@@ -40,4 +40,4 @@ RUN --mount=type=bind,readwrite,source=./,target=./source \
 # Switch to the non-privileged user to run the application.
 USER appuser
 
-CMD ["uvicorn", "chat_node.main:app", "--host", "0.0.0.0", "--port", "8001"]
+ENTRYPOINT ["uvicorn", "chat_node.main:app", "--host", "0.0.0.0", "--port", "80"]

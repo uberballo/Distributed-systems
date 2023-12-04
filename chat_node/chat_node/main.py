@@ -11,7 +11,7 @@ async def send_join_event():
 
     async with httpx.AsyncClient() as client:
         response = await client.post(
-            "http://main-node:8000/join", json=data, timeout=1
+            "http://main-node/join", json=data, timeout=1
         )
         res = response.json()
         return res
@@ -41,6 +41,6 @@ async def healthcheck():
 @app.get("/main")
 async def get_main():
     async with httpx.AsyncClient() as client:
-        response = await client.get("http://main-node:8000/main")
+        response = await client.get("http://main-node/main")
         res = response.json()
     return {"Response from main: ": res}

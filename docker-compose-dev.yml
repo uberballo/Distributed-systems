@@ -1,32 +1,35 @@
 services:
   chat-node:
     build:
-      context: ./chat_node
-      dockerfile: Dockerfile
+      dockerfile: chat_node/Dockerfile-dev
     deploy:
       replicas: 3
     networks:
       - chat
     depends_on:
       - main-node
+    volumes:
+      - "./:/source"
   exposed-chat-node:
     build:
-      context: ./chat_node
-      dockerfile: Dockerfile
+      dockerfile: chat_node/Dockerfile-dev
     ports:
       - "127.0.0.1:8001:80"
     networks:
       - chat
     depends_on:
       - main-node
+    volumes:
+      - "./:/source"
   main-node:
     build:
-      context: ./main_node
-      dockerfile: Dockerfile
+      dockerfile: main_node/Dockerfile-dev
     ports:
       - "127.0.0.1:8000:80"
     networks:
       - chat
+    volumes:
+      - "./:/source"
 
 networks:
   chat:
