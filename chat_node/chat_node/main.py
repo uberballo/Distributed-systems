@@ -28,7 +28,7 @@ async def send_join_event():
 
 @asynccontextmanager
 async def lifespan(application: FastAPI):
-    application.state.messages: [Message] = []
+    application.state.messages = []
     application.state.own_address = socket.gethostbyname(socket.gethostname())
     neighbors = await send_join_event()
     app.state.neighbors = list(map(lambda x: x["address"], neighbors))
