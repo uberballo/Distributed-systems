@@ -9,8 +9,8 @@ Start the service by running:
 ## "Kanban"
 
 TODO:
-- [ ] Send messages to a chat node
-- [ ] Get messages from a chat node
+- [x] Send messages to a chat node
+- [x] Get messages from a chat node
 - [x] Get neighbors from the main node
 - [x] Implement proper initialization to a chat node
     - Easy to do with fastapi `@app.on_event("startup")`
