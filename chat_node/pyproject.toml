@@ -3,7 +3,7 @@ name = "chat_node"
 version = "0.1.0"
 requires-python = ">=3.10"
 
-dependencies = ["fastapi", "httpx", "uvicorn"]
+dependencies = ["fastapi", "httpx", "pydantic", "uvicorn"]
 
 [project.optional-dependencies]
 dev = ["uvicorn[standard]", "black", "isort", "pylint[spelling]", "mypy"]

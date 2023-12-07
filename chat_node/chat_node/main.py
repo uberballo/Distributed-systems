@@ -3,23 +3,33 @@ from contextlib import asynccontextmanager
 
 import httpx
 from fastapi import FastAPI
+from pydantic import BaseModel
+
+
+class Message(BaseModel):
+    id: str
+    message: str
 
 
 async def send_join_event():
-    own_address = socket.gethostbyname(socket.gethostname())
-    data = {"name": "chat", "address": own_address}
+    data = {"name": "chat", "address": app.state.own_address}
 
     async with httpx.AsyncClient() as client:
         response = await client.post(
             "http://main-node/join", json=data, timeout=1
         )
         res = response.json()
-        return res
+        filtered = list(
+            filter(lambda x: x["address"] != app.state.own_address, res)
+        )
+
+        return filtered
 
 
 @asynccontextmanager
 async def lifespan(application: FastAPI):
-    application.state.temp_data = ["hello", "world"]
+    application.state.messages: [Message] = []
+    application.state.own_address = socket.gethostbyname(socket.gethostname())
     neighbors = await send_join_event()
     app.state.neighbors = list(map(lambda x: x["address"], neighbors))
     yield
@@ -28,14 +38,42 @@ async def lifespan(application: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 
+def contains_message(message: Message):
+    return message in app.state.messages
+
+
+def store_message(message: Message):
+    app.state.messages.append(message)
+
+
+def forward_message(message: Message):
+    for neighbor in app.state.neighbors:
+        print(f"Sending messages to {neighbor}")
+        res = httpx.post(f"http://{neighbor}/message", json=message.__dict__)
+        print(res)
+
+
 @app.get("/")
 async def read_root():
-    return {"temp_data:": app.state.temp_data}
+    return f"Greetings from {app.state.own_address}"
 
 
 @app.get("/health")
 async def healthcheck():
     return "I AM ALIVE"
+
+
+@app.post("/message")
+async def post_message(message: Message):
+    if not contains_message(message):
+        store_message(message)
+        forward_message(message)
+    return app.state.messages
+
+
+@app.get("/message")
+async def get_messages():
+    return app.state.messages
 
 
 @app.get("/main")

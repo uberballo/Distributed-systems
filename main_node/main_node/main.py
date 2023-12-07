@@ -50,7 +50,7 @@ async def lifespan(application: OurApp):
 
 async def healthcheck_nodes(nodes: list[ChatNode]):
     while True:
-        await sleep(5)
+        await sleep(30)
         for node in nodes:
             print(f"Healthchecking {node}")
             try:
