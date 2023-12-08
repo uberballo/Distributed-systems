@@ -73,7 +73,7 @@ app = OurApp(lifespan=lifespan)
 
 @app.get("/")
 async def read_root():
-    return {"temp_data:": app.temp_data}
+    return {"temp_data": app.temp_data}
 
 
 @app.get("/main")
@@ -91,4 +91,4 @@ async def handle_node_join(node: ChatNode):
 
 @app.get("/nodes")
 async def get_nodes():
-    return {"chat_nodes:": app.chat_nodes}
+    return {"chat_nodes": app.chat_nodes}
