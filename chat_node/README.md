@@ -11,5 +11,5 @@ pip install -r requirements.txt
 
 Run locally:  
 ```
-    uvicorn chat_node.main:app --port 8001 --reload
+    uvicorn app.main:app --port 8001 --reload
 ```

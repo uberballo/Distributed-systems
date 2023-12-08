@@ -3,12 +3,7 @@ from contextlib import asynccontextmanager
 
 import httpx
 from fastapi import FastAPI
-from pydantic import BaseModel
 
-class Message(BaseModel):
-    sender: str
-    message: str
-    recipient: str
 
 async def send_join_event():
     own_address = socket.gethostbyname(socket.gethostname())
@@ -36,11 +31,6 @@ app = FastAPI(lifespan=lifespan)
 @app.get("/")
 async def read_root():
     return {"temp_data:": app.state.temp_data}
-
-@app.post("/distributemessage")
-async def distribute_message(msg: Message):
-    print(msg)
-    return msg
 
 
 @app.get("/health")
