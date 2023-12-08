@@ -23,3 +23,14 @@ content-type: application/json
 ###
 
 GET http://localhost:8000/nodes
+
+###
+POST http://localhost:8001/message
+content-type: application/json
+
+
+{"id": "asd", "message": "Hello!"}
+
+
+###
+GET http://localhost:8001/message
