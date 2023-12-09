@@ -8,6 +8,7 @@ from pydantic import BaseModel
 
 class Message(BaseModel):
     id: str
+    sender: str
     message: str
 
 
