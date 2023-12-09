@@ -1,9 +1,10 @@
-import uuid
-from os import system, name, path
-import json
-import httpx
 import asyncio
+import json
 import time
+import uuid
+from os import name, path, system
+
+import httpx
 
 
 class EmptyNodeListException(Exception):
@@ -28,7 +29,7 @@ class ClientSystem:
                         raise EmptyNodeListException()
                     return next(iter(all_nodes))[
                         "address"
-                    ]  # Get first chatnode from the list.
+                    ]  # Get first chat node from the list.
                 except (EmptyNodeListException, KeyError):
                     time.sleep(2)
                     return (
@@ -43,13 +44,13 @@ class ClientSystem:
             if len(stripped) <= 0:
                 print("Username is invalid, please try again.")
                 continue
-            with open("config.json", "w") as out:
+            with open("config.json", "w", encoding="utf-8") as out:
                 json.dump({"name": stripped}, out)
             return stripped
 
     def whoami(self):
         if path.isfile("./config.json"):
-            with open("./config.json") as f:
+            with open("./config.json", encoding="utf-8") as f:
                 data = json.load(f)
                 try:
                     return data["name"]
@@ -73,7 +74,9 @@ class ClientSystem:
                 "sender": self.username,
                 "message": message,
             },
-        )  # self.chat_node only contains the ip address, but it's lacking the port, so currently its hard coded to the exposed one.
+        )
+        # self.chat_node only contains the IP address, but it's lacking the port,
+        # so currently its hard coded to the exposed one.
         res = r.json()  # Potential failure point if res is empty.
         self.add_messages_to_store(res)
 
@@ -105,9 +108,9 @@ class ClientSystem:
 
 
 def main():
-    pass
+    client = ClientSystem()
+    client.start()
 
 
 if __name__ == "__main__":
-    client = ClientSystem()
-    client.start()
+    main()
