@@ -19,19 +19,21 @@ TODO:
 - [x] Add health checker to main node
 - [ ] Create a client that communicates with a chat node
 
-## Dev environment
+## Development
 
-### Setup
+_Makefile assumes you have python3.12 installed. To change this behaviour run `make <target> PYTHON=pythonX.Y`_
 
-```
-python3.12 -m venv --clear .venv
-source .venv/bin/activate
-pip install --editable main_node[dev] --editable chat_node[dev] --editable client[dev]
-```
+### Setup dev environment
+
+`make init-dev-env`
+
+For activating virtual dev environment: `. .venv/bin/activate`
 
 ### Linting, formatting, type checking, import sorting
 
-After activating the environment and installing applications and dependencies: `make check`
+`make check` - for checking everything
+
+Available targets: `check-format`, `check-imports`,`check-lint`, `check-types`, `format`, `sort-imports`
 
 ### Docker compose with reload
 
