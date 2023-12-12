@@ -2,9 +2,7 @@
 
 ## How to run
 Start the service by running:
-```
-    docker compose up
-```
+`make up`
 
 ## "Kanban"
 
@@ -18,6 +16,9 @@ TODO:
 - [x] Ping main node when a new chat nodes joins
 - [x] Add health checker to main node
 - [ ] Create a client that communicates with a chat node
+- [ ] When new node joins or disconnects main node must ask every node to find out round trip times to all the other nodes an return it to main node. Based on RRTs between all nodes, main node should calculate minimum spanning tree to find out which nodes should communicate to each others to avoid unnecessary traffic.
+- [ ] Get rid of main node, make chat nodes discover each others by broadcasting or multicasting and add leader election
+
 
 ## Development
 
@@ -37,4 +38,4 @@ Available targets: `check-format`, `check-imports`,`check-lint`, `check-types`, 
 
 ### Docker compose with reload
 
-`docker compose -f docker-compose-dev.yml up --build`
+`make dev-up`
