@@ -3,7 +3,7 @@ name = "client"
 version = "0.1.0"
 requires-python = ">=3.10"
 
-dependencies = []
+dependencies = ["aioconsole"]
 
 [project.optional-dependencies]
 dev = ["black", "isort", "pylint[spelling]", "mypy"]

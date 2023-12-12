@@ -19,6 +19,12 @@ TODO:
 - [x] Add health checker to main node
 - [ ] Create a client that communicates with a chat node
 
+### Missing features
+
+- Minimize overhead when sending messages
+- Send all messages including history when forwarding to new nodes
+- Reduce client overhead when polling for new messages
+
 ## Dev environment
 
 ### Setup
@@ -36,3 +42,4 @@ After activating the environment and installing applications and dependencies: `
 ### Docker compose with reload
 
 `docker compose -f docker-compose-dev.yml up --build`
+
