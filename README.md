@@ -20,6 +20,12 @@ TODO:
 - [ ] Get rid of main node, make chat nodes discover each others by broadcasting or multicasting and add leader election
 
 
+### Missing features
+
+- Minimize overhead when sending messages
+- Send all messages including history when forwarding to new nodes
+- Reduce client overhead when polling for new messages
+
 ## Development
 
 _Makefile assumes you have python3.12 installed. To change this behaviour run `make <target> PYTHON=pythonX.Y`_
