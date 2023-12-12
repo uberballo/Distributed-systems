@@ -4,6 +4,8 @@ PYTHON := python3.12
 VENV_DIR := .venv
 VENV_PYTHON := $(VENV_DIR)/bin/python
 PYPROJECT_FILES := $(call recursive-wildcard,., *pyproject.toml)
+PYTHON_FILES := $(call recursive-wildcard,., *.py)
+DOCKERFILES := $(call recursive-wildcard,., Dockerfile*)
 
 .PHONY: check-format
 check-format: init-dev-venv
@@ -47,6 +49,32 @@ $(INIT_DEV_VENV): $(PYPROJECT_FILES) | create-dev-venv
 	$(VENV_PYTHON) -m pip install --editable main_node[dev] --editable chat_node[dev] --editable client[dev]
 	touch $@
 
+BUILD_CONTAINERS := tmp/build_containers_stamp
+.PHONY: build-containers
+build-containers: $(BUILD_CONTAINERS)
+$(BUILD_CONTAINERS): $(PYTHON_FILES) $(PYPROJECT_FILES) $(DOCKERFILES)
+	docker compose build
+	mkdir -p tmp
+	touch $@
+
+UP := tmp/up_stamp
+.PHONY: up
+up: $(BUILD_CONTAINERS)
+	docker compose up
+
+BUILD_DEV_CONTAINERS := tmp/build_dev_containers_stamp
+.PHONY: build-dev-containers
+build-dev-containers: $(BUILD_DEV_CONTAINERS)
+$(BUILD_DEV_CONTAINERS): $(PYPROJECT_FILES) $(DOCKERFILES)
+	docker compose -f docker-compose-dev.yml build
+	mkdir -p tmp
+	touch $@
+
+DEV_UP := tmp/dev_up_stamp
+.PHONY: dev-up
+dev-up: $(BUILD_DEV_CONTAINERS)
+	docker compose -f docker-compose-dev.yml up
+
 .PHONY: clean
 clean:
-	rm -rf $(VENV_DIR)
+	rm -rf $(VENV_DIR) tmp
