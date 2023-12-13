@@ -19,6 +19,7 @@ class OurApp(FastAPI):
     temp_data: list[str]
     background_tasks: list[Task]
     chat_nodes: list[ChatNode]
+    chat_node_index: int
 
     def __init__(
         self,
@@ -34,6 +35,7 @@ class OurApp(FastAPI):
         self.temp_data = temp_data or []
         self.background_tasks = background_tasks or []
         self.chat_nodes = chat_nodes or []
+        self.chat_node_index = 0
 
 
 @asynccontextmanager
@@ -92,3 +94,10 @@ async def handle_node_join(node: ChatNode):
 @app.get("/nodes")
 async def get_nodes():
     return {"chat_nodes": app.chat_nodes}
+
+
+@app.get("/node")
+async def get_node():
+    chat_node = app.chat_nodes[app.chat_node_index % len(app.chat_nodes)]
+    app.chat_node_index += 1
+    return {"chat_node": chat_node}

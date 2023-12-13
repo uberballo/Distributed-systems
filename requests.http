@@ -13,6 +13,9 @@ GET http://localhost:8001
 GET http://localhost:8001/main
 
 ###
+GET http://localhost:8001/node
+
+###
 POST http://localhost:8000/join
 content-type: application/json
 
