@@ -37,7 +37,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=bind,readwrite,source=./,target=./source \
     pip install ./source --no-deps
 
-
 # Switch to the non-privileged user to run the application.
 USER appuser
 
