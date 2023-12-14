@@ -75,6 +75,18 @@ DEV_UP := tmp/dev_up_stamp
 dev-up: $(BUILD_DEV_CONTAINERS)
 	docker compose -f docker-compose-dev.yml up
 
+
+.PHONY: client
+client:
+	docker build -t client -f client/Dockerfile client/
+	docker run -it --network distributed-systems_chat client
+
+.PHONY: client-dev
+client-dev:
+	docker build -t client-dev -f client/Dockerfile-dev .
+	docker run -it -v ./:/source --network distributed-systems_chat client-dev
+
 .PHONY: clean
 clean:
 	rm -rf $(VENV_DIR) tmp
+

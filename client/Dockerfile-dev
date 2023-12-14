@@ -21,25 +21,24 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
-# Inform Docker that container listens this port at runtime
-EXPOSE 8001
-
 # Download dependencies as a separate step to take advantage of Docker's caching
 # Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
 # Leverage a bind mount to pyproject.toml to avoid having to copy it
 RUN --mount=type=cache,target=/root/.cache/pip \
-    --mount=type=bind,source=main_node/pyproject.toml,target=pyproject.toml \
+    --mount=type=bind,source=client/pyproject.toml,target=pyproject.toml \
     pip install $(python -c 'import tomllib; print(" ".join(tomllib.load(open("pyproject.toml", "rb"))["project"]["dependencies"]))')
 
 # Install application to Python site-packages
 # Do this after installing the dependencies to make rebuilding the image faster
 # after introducing changes to application source code
 RUN --mount=type=bind,readwrite,source=./,target=./source \
-    pip install --editable ./source/chat_node[dev] --no-deps
+    pip install --editable ./source/client[dev] --no-deps
+
+VOLUME "/source"
 
 # Switch to the non-privileged user to run the application.
 USER appuser
 
-VOLUME "/source"
+WORKDIR /user_data
 
-ENTRYPOINT ["uvicorn", "chat_node.main:app", "--host", "0.0.0.0", "--port", "80", "--reload", "--reload-include", "/source"]
+ENTRYPOINT ["sh"]

@@ -3,7 +3,10 @@ name = "client"
 version = "0.1.0"
 requires-python = ">=3.10"
 
-dependencies = ["aioconsole"]
+dependencies = ["aioconsole", "httpx"]
 
 [project.optional-dependencies]
 dev = ["black", "isort", "pylint[spelling]", "mypy"]
+
+[project.scripts]
+client = "client.main:main"

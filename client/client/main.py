@@ -14,7 +14,7 @@ class EmptyNodeListException(Exception):
 class ClientSystem:
     def __init__(self):
         self.username = self.whoami()
-        self.main_node = "127.0.0.1:8000"
+        self.main_node = "main-node"
         self.chat_node = asyncio.run(self.get_chatnode())
         self.message_store = []
 
@@ -68,7 +68,7 @@ class ClientSystem:
 
     def send_message(self, message):
         r = httpx.post(
-            "http://127.0.0.1:8001/message",
+            f"http://{self.chat_node}/message",
             json={
                 "id": uuid.uuid4().hex,
                 "sender": self.username,
