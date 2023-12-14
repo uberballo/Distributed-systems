@@ -62,18 +62,30 @@ class ClientSystem:
         )
 
     def send_message(self, message):
-        r = httpx.post(
-            f"http://{self.chat_node}/message",
-            json={
-                "id": uuid.uuid4().hex,
-                "sender": self.username,
-                "message": message,
-            },
-        )
-        # self.chat_node only contains the IP address, but it's lacking the port,
-        # so currently its hard coded to the exposed one.
-        res = r.json()  # Potential failure point if res is empty.
-        self.add_messages_to_store(res)
+        message = {
+            "id": uuid.uuid4().hex,
+            "sender": self.username,
+            "message": message,
+        }
+        while True:
+            try:
+                r = httpx.post(
+                    f"http://{self.chat_node}/message", json=message
+                )
+                print(r)
+                print(r.text)
+                # self.chat_node only contains the IP address, but it's lacking the port,
+                # so currently its hard coded to the exposed one.
+                res = r.json()  # Potential failure point if res is empty.
+                self.add_messages_to_store(res)
+
+                return
+            except (httpx.TimeoutException, httpx.ReadTimeout):
+                print("Could not connect to chat, getting new one")
+
+                self.chat_node = asyncio.run(self.get_chatnode())
+
+                continue
 
     def print_chat_log(self):
         for message in self.message_store[-15:]:
