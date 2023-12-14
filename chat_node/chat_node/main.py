@@ -12,6 +12,12 @@ class Message(BaseModel):
     message: str
 
 
+class NodeRequest(BaseModel):
+    name: str
+    id: str
+    address: str
+
+
 async def send_join_event():
     data = {"name": "chat", "address": app.state.own_address}
 
@@ -23,7 +29,6 @@ async def send_join_event():
         filtered = list(
             filter(lambda x: x["address"] != app.state.own_address, res)
         )
-
         return filtered
 
 
@@ -47,11 +52,16 @@ def store_message(message: Message):
     app.state.messages.append(message)
 
 
-def forward_message(message: Message):
-    for neighbor in app.state.neighbors:
-        print(f"Sending messages to {neighbor}")
-        res = httpx.post(f"http://{neighbor}/message", json=message.__dict__)
-        print(res)
+async def forward_message(message: Message):
+    async with httpx.AsyncClient() as client:
+        for neighbor in app.state.neighbors:
+            print(
+                f"Sending messages to {neighbor} from {app.state.own_address}"
+            )
+            res = await client.post(
+                f"http://{neighbor}/message", json=message.__dict__
+            )
+            print(res)
 
 
 @app.get("/")
@@ -66,15 +76,23 @@ async def healthcheck():
 
 @app.post("/message")
 async def post_message(message: Message):
+    print("Message!!")
     if not contains_message(message):
         store_message(message)
-        forward_message(message)
-    return app.state.messages
+        await forward_message(message)
+        return app.state.messages
+    return "Ok"
 
 
 @app.get("/message")
 async def get_messages():
     return app.state.messages
+
+
+@app.post("/node")
+async def post_new_nodes(node: NodeRequest):
+    app.state.neighbors.append(node.address)
+    return "Ok"
 
 
 @app.get("/main")
