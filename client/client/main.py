@@ -20,16 +20,11 @@ class ClientSystem:
 
     async def get_chatnode(self):
         async with httpx.AsyncClient() as client:
-            res = await client.get(f"http://{self.main_node}/nodes")
+            res = await client.get(f"http://{self.main_node}/node")
             if res.status_code == 200:
-                nodes = res.json()
+                node = res.json()
                 try:
-                    all_nodes = nodes["chat_nodes"]
-                    if len(all_nodes) == 0:
-                        raise EmptyNodeListException()
-                    return next(iter(all_nodes))[
-                        "address"
-                    ]  # Get first chat node from the list.
+                    return node["chat_node"]["address"]
                 except (EmptyNodeListException, KeyError):
                     time.sleep(2)
                     return (
@@ -96,8 +91,9 @@ class ClientSystem:
     def start(self):
         while True:
             print(
-                f"\n===== Distributed Messenger. Welcome {self.username}! Type"
-                " (/exit) to exit. =====\n"
+                f"\n===== Distributed Messenger. Welcome {self.username}!"
+                f" Connected to {self.chat_node}. Type (/exit) to exit."
+                " =====\n"
             )
             self.print_chat_log()
             message = input("Enter the message: ")
