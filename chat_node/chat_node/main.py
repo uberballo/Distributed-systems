@@ -92,7 +92,7 @@ async def get_messages():
 @app.post("/node")
 async def post_new_nodes(node: NodeRequest):
     app.state.neighbors.append(node.address)
-    return ""
+    return "Ok"
 
 
 @app.get("/main")
