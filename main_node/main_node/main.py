@@ -70,6 +70,11 @@ async def healthcheck_nodes(nodes: list[ChatNode]):
                 print(f"Removed node {node}")
 
 
+def post_new_nodes(targets: list[ChatNode], new_node: ChatNode):
+    for node in targets:
+        httpx.post(f"http://{node.address}/node", json=new_node.__dict__)
+
+
 app = OurApp(lifespan=lifespan)
 
 
@@ -86,9 +91,11 @@ async def read_main():
 @app.post("/join")
 async def handle_node_join(node: ChatNode):
     print(f"New node joined: {node}")
-    response = app.chat_nodes
+    current_nodes = app.chat_nodes
+    post_new_nodes(current_nodes, node)
     app.chat_nodes.append(node)
-    return response
+
+    return current_nodes
 
 
 @app.get("/nodes")
