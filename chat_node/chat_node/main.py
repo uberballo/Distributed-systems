@@ -1,4 +1,5 @@
 import socket
+from asyncio import Lock
 from contextlib import asynccontextmanager
 
 import httpx
@@ -38,6 +39,7 @@ async def lifespan(application: FastAPI):
     application.state.own_address = socket.gethostbyname(socket.gethostname())
     neighbors = await send_join_event()
     app.state.neighbors = list(map(lambda x: x["address"], neighbors))
+    app.state.lock = Lock()
     yield
 
 
@@ -58,10 +60,19 @@ async def forward_message(message: Message):
             print(
                 f"Sending messages to {neighbor} from {app.state.own_address}"
             )
-            res = await client.post(
-                f"http://{neighbor}/message", json=message.__dict__
-            )
-            print(res)
+            try:
+                res = await client.post(
+                    f"http://{neighbor}/message",
+                    json=message.__dict__,
+                )
+                print(res)
+            except (httpx.ConnectTimeout, httpx.ConnectError):
+                async with app.state.lock:
+                    print(f"Removing neighbor {neighbor}")
+                    if neighbor in app.state.neighbors:
+                        app.state.neighbors.remove(neighbor)
+            except httpx.ReadTimeout:
+                pass
 
 
 @app.get("/")
@@ -76,12 +87,11 @@ async def healthcheck():
 
 @app.post("/message")
 async def post_message(message: Message):
-    print("Message!!")
     if not contains_message(message):
         store_message(message)
         await forward_message(message)
         return app.state.messages
-    return "Ok"
+    return app.state.messages
 
 
 @app.get("/message")
